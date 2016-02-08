@@ -1,41 +1,58 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 activityData <- read.csv("./Activity/activity.csv")
 ```
 
 ## What is mean total number of steps taken per day?
-```{r}
+
+```r
 totalSteps <- tapply(activityData$steps, activityData$date, FUN=sum, na.rm=TRUE)
 mean(totalSteps, na.rm=TRUE)
 ```
 
+```
+## [1] 9354.23
+```
+
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 averageDailyActivity <- aggregate(steps ~interval, activityData, FUN=mean, na.rm=TRUE)
 ```
 
 ## Imputing missing values
-```{r}
+
+```r
 missingSteps <- is.na(activityData$steps)
 table(missingSteps)
+```
+
+```
+## missingSteps
+## FALSE  TRUE 
+## 15264  2304
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 missingSteps <- is.na(activityData$steps)
 table(missingSteps)
 ```
 
+```
+## missingSteps
+## FALSE  TRUE 
+## 15264  2304
+```
+
 ###Fill missing value with the mean value of its 5-minute interval
-```{r}
+
+```r
 FillMissingValue <- function(steps, interval) {
       filledWithMean <- NA
       if (!is.na(steps))
@@ -50,16 +67,28 @@ filledWithMean.Data$steps <-
 ```
 
 ###Calculate and report the mean and median total number of steps taken per day
-```{r}
+
+```r
 totalSteps <- tapply(filledWithMean.Data$steps, filledWithMean.Data$date, FUN=sum)
 
 mean(totalSteps)
+```
 
+```
+## [1] 10766.19
+```
+
+```r
 median(totalSteps)
 ```
 
+```
+## [1] 10766.19
+```
+
 ###Differences in activity patterns between weekdays and weekends
-```{r}
+
+```r
 weekdayOrWeekend <- function(date) {
       day <- weekdays(date)
       if (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
